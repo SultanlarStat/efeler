@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<base target="_blank">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Efeler Ligi · Sayı ve dig videoları</title>
+<meta name="description" content="SMS Grup Efeler Ligi: oyuncuların hücum sayısı, blok sayısı, Ace ve dig'lerinin videoları, o ralliden başlayarak.">
+<meta property="og:title" content="Efeler Ligi · Sayı ve dig videoları">
+<meta property="og:description" content="Takım, maç ve oyuncu seç; oyuncunun sayıları ve dig'leri videoda o andan başlar.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sultanlarstat.github.io/efeler/">
+<meta property="og:image" content="https://sultanlarstat.github.io/efeler/kapak.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sultanlarstat.github.io/efeler/kapak.png?v=2">
+<meta name="twitter:site" content="@SultanlarStat">
+<meta name="theme-color" content="#000000">
+<!-- ana ekrana eklenince uygulama gibi açılır (adres çubuğu yok; iPhone'da tam ekran ancak böyle) -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sayı ve dig">
+<script data-goatcounter="https://sultanlarstat.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script async src="https://www.youtube.com/iframe_api"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14'/%3E%3Cg fill='none' stroke='%23f5b301' stroke-width='4' stroke-linecap='round'%3E%3Ccircle cx='32' cy='32' r='24'/%3E%3Cpath d='M32 8c-5 9-5 19 0 24M32 32c10 1 18-3 23-11M32 32c-4 9-13 14-23 13'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root { --bg:#000; --fg:#eef0f3; --mute:#9aa1ad; --line:#262a31; --card:#111318; --card2:#181b21; --acc:#f5b301;
+          --link:#7cb7ff; --hit:#7cb7ff; --blk:#2dd4bf; --ace:#f5b301; --dig:#c4a1ff; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background:var(--bg); color:var(--fg);
+               font:15px/1.45 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color:var(--link); text-decoration:none; }
+  .wrap { padding:0 20px 24px; }
+  /* ana ekrandan açılınca (iPhone) içerik saat / çentik alanının altından başlasın */
+  @media (display-mode: standalone) { .wrap { padding-top:env(safe-area-inset-top); } }
+
+  /* başlık: siyah zemin, saha çizgileri, top */
+  .hero { position:relative; overflow:hidden; margin:0 -20px 16px; padding:22px 20px 20px;
+          background:radial-gradient(120% 140% at 85% 10%, #1d1606 0%, #000 55%); border-bottom:1px solid var(--line); }
+  .hero svg.court { position:absolute; right:-40px; top:-10px; height:150%; opacity:.18; pointer-events:none; }
+  .hero .top { position:relative; display:flex; align-items:center; gap:14px; }
+  .hero .ball { width:46px; height:46px; flex:none; transition:transform .3s; }
+  .hero .home { display:flex; align-items:center; gap:14px; color:inherit; }
+  .hero .home:hover .ball { transform:rotate(-25deg); }
+  .hero .kicker { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); font-weight:700; }
+  .hero h1 { margin:2px 0 0; font-size:26px; line-height:1.1; letter-spacing:-.01em; }
+  .hero .tlogo { width:46px; height:46px; object-fit:contain; flex:none; background:#f1f1f4; border-radius:50%; padding:5px;
+                 box-sizing:border-box; box-shadow:0 0 0 2px var(--acc); }
+  .hero .x { margin-left:auto; display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid #333;
+             border-radius:999px; color:var(--fg); font-size:14px; background:rgba(255,255,255,.04); white-space:nowrap; }
+  .hero .x svg { width:15px; height:15px; fill:var(--fg); }
+  .hero .help { margin-left:8px; width:32px; height:32px; flex:none; display:inline-flex; align-items:center; justify-content:center;
+                border:1px solid #333; border-radius:50%; color:var(--fg); font-weight:800; font-size:15px; background:rgba(255,255,255,.04); }
+  .hero .help:hover { border-color:var(--acc); color:var(--acc); }
+  .hero .lang { padding:6px 10px; font-size:13px; font-weight:700; border-radius:999px; margin-left:8px; }
+  /* iki dilli uzun metinler: sadece seçili dil görünür */
+  html[lang="en"] .l-tr, html[lang="tr"] .l-en { display:none; }
+  .hero .lead { position:relative; margin:12px 0 0; color:var(--mute); font-size:13.5px; max-width:780px; }
+  @media (max-width:440px) { .hero .help { display:none; } }
+  @media (max-width:640px) { .hero .top { gap:10px; } .hero .home { gap:10px; min-width:0; } .hero .home > div { min-width:0; }
+                             .hero .tlogo { width:34px; height:34px; padding:3px; } .hero .lang { margin-left:4px; } .hero h1 { font-size:21px; } .hero .x span { display:none; } .hero .ball { width:38px; height:38px; }
+                             .hero .kicker { font-size:11px; letter-spacing:.06em; white-space:nowrap; } }
+
+  .filters { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; margin-bottom:10px; }
+  @media (max-width:640px) { .filters { grid-template-columns:1fr 1fr; } }
+  /* sekmeler: Sayılar ve dig'ler / En uzun ralliler */
+  .tabs { display:flex; gap:4px; margin:0 0 14px; border-bottom:1px solid var(--line); overflow-x:auto; }
+  .tab { background:none; border:0; border-bottom:3px solid transparent; border-radius:0; margin-bottom:-1px;
+         padding:9px 14px; font-weight:600; color:var(--mute); white-space:nowrap; }
+  .tab.on { color:var(--fg); border-bottom-color:var(--acc); }
+  body[data-mod="uzun"] .only-sayi, body[data-mod="sayi"] .only-uzun { display:none; }
+  /* en uzun ralliler listesi */
+  .urow { display:grid; grid-template-columns:34px 86px 1fr 104px 180px 150px auto; gap:10px; align-items:center;
+          padding:8px 6px; border-radius:6px; font-size:14px; }
+  .urow.h { color:var(--mute); font-size:12px; border-bottom:1px solid var(--line); border-radius:0; padding-bottom:6px; }
+  .urow .rk { font-weight:800; color:var(--acc); text-align:center; font-size:15px; }
+  .urow .bar { height:7px; background:#2a2f37; border-radius:4px; overflow:hidden; margin-top:3px; }
+  .urow .bar i { display:block; height:100%; background:var(--acc); }
+  .urow .ss { display:none; }
+  @media (max-width:640px) { .urow { grid-template-columns:22px 1fr 104px auto; gap:8px; }
+                             .urow .d, .urow .w { display:none; } .urow .ss { display:block; color:var(--mute); font-size:12.5px; }
+                             .urow b { font-size:12.5px; } }
+  label { display:block; font-size:12px; color:var(--mute); margin-bottom:3px; }
+  select { width:100%; padding:8px; font-size:15px; border:1px solid var(--line); border-radius:8px;
+           background:var(--card); color:var(--fg); }
+  .types { display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin:6px 0 10px; font-size:14px; }
+  .types label { display:inline-flex; gap:5px; align-items:center; color:var(--fg); font-size:14px; margin:0; }
+  .types label:has(input:disabled) { opacity:.45; }
+  /* Arka sıra Hücum'un alt kümesi: ikisi açık gri bir zeminde birlikte (kullanıcının isteği, 24.11.2026) */
+  .types .grp { display:inline-flex; gap:10px; align-items:center; padding:2px 8px;
+    border-radius:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.10); }
+  .offset { display:inline-flex; gap:5px; align-items:center; font-size:13px; color:var(--mute); white-space:nowrap; }
+  .offset button { padding:3px 9px; font-size:13px; }
+  .offset b { color:var(--fg); min-width:40px; text-align:center; }
+  .ctl { display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; justify-content:flex-end; margin-left:auto; }
+  .nav { white-space:nowrap; }
+  @media (max-width:640px) { .nav { white-space:normal; display:flex; flex-wrap:wrap; gap:6px; justify-content:flex-end; } }
+  label.auto { display:inline-flex; gap:5px; align-items:center; margin:0; font-size:13px; color:var(--fg); white-space:nowrap; }
+  button { padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:var(--card2); color:var(--fg);
+           font-size:14px; cursor:pointer; }
+  button:hover { border-color:#3a404a; }
+
+  details.info { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 12px;
+                 margin:0 0 12px; font-size:13.5px; color:var(--mute); }
+  details.info summary { cursor:pointer; color:var(--fg); }
+  details.info p { margin:8px 0 4px; }
+  details.info b { color:var(--fg); font-weight:600; }
+  code { background:var(--card2); padding:1px 5px; border-radius:4px; color:var(--fg); }
+
+  .player { position:sticky; top:0; background:var(--bg); padding:4px 0 8px; z-index:2; }
+  /* video açıkken liste kendi içinde kayar, oynatıcı yerinde kalır (--ph: oynatıcının yüksekliği) */
+  #list { position:relative; }
+  body.playing #list { height:calc(100vh - var(--ph, 0px)); overflow-y:auto; overscroll-behavior:contain;
+                       border-top:1px solid var(--line); }
+  @supports (height: 100dvh) { body.playing #list { height:calc(100dvh - var(--ph, 0px)); } }
+  /* yapışık oynatıcı ekranın en çok ~%55'i: dizüstünde de altındaki liste görünsün */
+  .player .frame { position:relative; width:min(100%, calc(55vh * 16 / 9)); margin:0 auto; aspect-ratio:16/9;
+                   background:#000; border-radius:10px; overflow:hidden; border:1px solid var(--line); }
+  .player .bar { width:min(100%, calc(55vh * 16 / 9)); margin-left:auto; margin-right:auto; }
+  .player .bar { flex-wrap:wrap; }
+  @media (max-width:640px) { .player .bar button { padding:5px 9px; font-size:13px; } .offset button { padding:3px 7px; }
+                             .ctl { width:100%; justify-content:space-between; } }
+  .player iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  /* geçiş: siyaha inme / açılma ve sol altta sayının bilgisi (oynatıcının üstünde, tıklamayı engellemez) */
+  .frame .fade { position:absolute; inset:0; background:#000; opacity:0; transition:opacity .8s; pointer-events:none; z-index:2; }
+  .frame .fade.on { opacity:1; transition:opacity 1s; }
+  /* liste bitince: siyah ekranda "Listenin sonu" (video durur) */
+  .frame .endcard { position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center;
+                    justify-content:center; gap:8px; color:#fff; opacity:0; pointer-events:none; transition:opacity .8s; }
+  .frame .endcard.on { opacity:1; pointer-events:auto; }
+  .frame .endcard b { font-size:24px; letter-spacing:.02em; }
+  .frame .endcard span { color:#cfd3da; font-size:14px; }
+  .frame .endcard button { margin-top:8px; }
+  .frame .cap { position:absolute; left:14px; bottom:118px; max-width:calc(100% - 28px); padding:7px 12px; z-index:3;
+                background:rgba(0,0,0,.72); border-left:3px solid var(--acc); border-radius:4px; color:#fff;
+                opacity:0; transform:translateY(6px); transition:opacity .4s, transform .4s; pointer-events:none; }
+  .frame .cap.on { opacity:1; transform:none; }
+  .frame .cap b { display:block; font-size:16px; }
+  .frame .cap span { display:block; font-size:12.5px; color:#cfd3da; margin-top:1px; }
+  /* telefonda gösterilmez: küçük ekranda videoyu kapatıyor, aynı bilgi oynatıcının altında yazıyor */
+  @media (max-width:640px) { .frame .cap { display:none; } }
+  /* kendi tam ekranımız (YouTube'unkinde üstteki katmanlar görünmüyordu): gerçek tam ekran ya da (iPhone'da
+     div tam ekran olamıyor) ekranı kaplayan katman; ikisinde de kararma, yazı ve ◀ ▶ ✕ görünür */
+  .frame.fs { position:fixed; inset:0; z-index:100; width:100vw; height:100vh; max-width:none; margin:0; border:0;
+              border-radius:0; aspect-ratio:auto; background:#000; }
+  @supports (height: 100dvh) { .frame.fs { height:100dvh; } }
+  .frame.fs .cap { display:block; left:24px; bottom:150px; }
+  .frame.fs .cap b { font-size:20px; } .frame.fs .cap span { font-size:14px; }
+  @media (max-width:900px) { .frame.fs .cap { left:12px; bottom:112px; padding:5px 9px; }
+                             .frame.fs .cap b { font-size:14px; } .frame.fs .cap span { font-size:11.5px; } }
+  .fsbar { display:none; position:absolute; top:50%; right:12px; transform:translateY(-50%); z-index:4; gap:8px;
+           flex-direction:column; }   /* sağ kenarın ortası: YouTube'un üst / alt düğmeleriyle çakışmasın */
+  .frame.fs .fsbar { display:flex; }
+  .fsbar button { background:rgba(0,0,0,.6); border-color:rgba(255,255,255,.25); padding:6px 11px; font-size:15px; }
+  .frame .cap i { font-style:normal; }
+  .player .bar { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:13px;
+                 color:var(--mute); margin-top:6px; }
+  .summary { color:var(--mute); font-size:13px; }
+  .sumrow { display:flex; justify-content:space-between; align-items:center; gap:10px; margin:6px 0 4px; }
+  button.share { padding:4px 10px; font-size:13px; white-space:nowrap; }
+  /* paylaşım bildirimi (bilgisayarda: link kopyalandı + X'te paylaş) */
+  .toast { position:fixed; left:50%; bottom:24px; transform:translate(-50%, 20px); z-index:200; opacity:0;
+           pointer-events:none; transition:opacity .3s, transform .3s; background:#1c2027; border:1px solid #3a404a;
+           border-radius:10px; padding:10px 14px; font-size:14px; box-shadow:0 6px 24px rgba(0,0,0,.6); }
+  .toast.on { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+  .toast a { margin-left:12px; font-weight:600; }
+  .novideo { color:var(--mute); font-size:13px; margin:0 0 10px; }
+  .match { margin:16px 0 4px; font-weight:600; font-size:14px; border-bottom:1px solid var(--line); padding-bottom:5px; }
+  .row { display:grid; grid-template-columns:62px 62px 70px 1fr auto; gap:8px; align-items:center; padding:6px 6px;
+         border-radius:6px; font-size:14px; }
+  .row.click, .urow.click { cursor:pointer; }
+  .row.click:hover, .row.on, .urow.click:hover, .urow.on { background:var(--card2); }
+  .urow.on { box-shadow:inset 3px 0 0 var(--acc); }
+  .row.click:focus-visible, .urow.click:focus-visible { outline:2px solid var(--acc); outline-offset:-2px; }
+  .row.on { box-shadow:inset 3px 0 0 var(--acc); }
+  .row .who { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tag { font-size:12px; font-weight:700; }
+  .t-Hücum { color:var(--hit); } .t-Blok { color:var(--blk); } .t-Ace { color:var(--ace); } .t-Dig { color:var(--dig); }
+  .row a { font-size:13px; }
+  .muted { color:var(--mute); font-size:13px; }
+  .msg { padding:30px 0; text-align:center; color:var(--mute); }
+  footer p { margin:0; }
+  footer { margin-top:28px; padding-top:12px; border-top:1px solid var(--line); color:var(--mute); font-size:12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <svg class="court" viewBox="0 0 400 300" fill="none" stroke="#f5b301" stroke-width="2">
+      <rect x="20" y="20" width="360" height="260"/><line x1="200" y1="20" x2="200" y2="280" stroke-width="5"/>
+      <line x1="140" y1="20" x2="140" y2="280"/><line x1="260" y1="20" x2="260" y2="280"/>
+    </svg>
+    <div class="top">
+      <!-- top ve başlık: ana görünüme dön (Sayılar, Bütün takımlar, son hafta); aynı sekmede -->
+      <a class="home" href="./" target="_self" data-it="home" title="Ana sayfa">
+      <svg class="ball" viewBox="0 0 64 64" fill="none" stroke="#f5b301" stroke-width="3" stroke-linecap="round">
+        <circle cx="32" cy="32" r="28"/>
+        <path d="M32 4c-6 10-6 22 0 28M32 32c11 1 21-4 27-13M32 32c-5 10-15 16-27 15"/>
+        <path d="M14 11c9 2 16 9 18 21M58 40c-9-5-19-6-26-8M22 58c3-10 4-18 10-26"/>
+      </svg>
+      <div>
+        <div class="kicker" lang="tr">SMS Grup Efeler Ligi</div>
+        <h1 data-t="h1">Sayı ve dig videoları</h1>
+      </div>
+      </a>
+      <img id="tlogo" class="tlogo" alt="" hidden>
+      <a class="x" href="https://x.com/SultanlarStat" title="X'te @SultanlarStat">
+        <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.9L7.1 3.9H5.1L17.7 20Z"/></svg>
+        <span>@SultanlarStat</span></a>
+      <a class="help" id="help" href="yardim.html" target="_self" data-it="help" title="Yardım ve sık sorulan sorular">?</a>
+      <button class="lang" id="lang" title="Türkçe / English">EN</button>
+    </div>
+    <p class="lead" id="sub" data-t="loading">Veri yükleniyor…</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" data-mod="sayi" data-t="tab_sayi" role="tab">Sayılar ve dig'ler</button>
+    <button class="tab" data-mod="uzun" data-t="tab_uzun" role="tab">En uzun ralliler</button>
+  </div>
+  <div class="filters">
+    <div><label for="team" data-t="team">Takım</label><select id="team"></select></div>
+    <div><label for="week" data-t="week">Hafta</label><select id="week"></select></div>
+    <div class="only-sayi"><label for="match" data-t="match">Maç</label><select id="match"></select></div>
+    <div class="only-sayi"><label for="pl" data-t="player">Oyuncu</label><select id="pl"></select></div>
+    <div class="only-uzun"><label for="kac" data-t="kac">Kaç ralli</label>
+      <select id="kac"><option>10</option><option selected>20</option><option>50</option></select></div>
+  </div>
+  <div class="types only-sayi">
+    <span class="grp"><label><input type="checkbox" value="Hücum" checked> <span data-t="tur_hucum">Hücum</span></label>
+    <label data-it="arka_title" title="Arka sıradaki oyuncunun (3 m gerisinden) hücum sayıları"><input type="checkbox" value="Arka" checked> <span data-t="tur_arka">Arka sıra</span></label></span>
+    <label><input type="checkbox" value="Blok" checked> <span data-t="tur_blok">Blok</span></label>
+    <label><input type="checkbox" value="Ace" checked> <span data-t="tur_ace">Ace</span></label>
+    <label data-it="dig_title" title="Mükemmel ve iyi dig'ler; ralli kaybedilmiş olabilir"><input type="checkbox" value="Dig" checked> <span data-t="tur_dig">Dig</span></label>
+  </div>
+
+  <details class="info">
+    <summary><span class="l-tr">Video tam servisten başlamıyor mu? Reklam mı çıkıyor? Video açılmıyor mu? iPhone'da tam ekran?</span><span class="l-en">Clip not starting at the serve? Seeing ads? Video not available? Full screen on iPhone?</span></summary>
+    <div class="l-tr">
+    <p><b>Başlangıç anı.</b> Videodaki an, VolleyStation kaydındaki rallinin başlama saatinden ve YouTube yayınının
+      başlama saatinden hesaplanıyor. Yayın salondaki zamanın birkaç saniye gerisinden gelebiliyor (yayıncıya göre
+      değişiyor), istatistiği tutanın ralliyi işaretlediği an da servisle birebir aynı değil. Video erken başlıyorsa
+      oynatıcının altındaki <b>Yayın gecikmesi</b>ni artır (+), geç başlıyorsa azalt (−); ayar bu tarayıcıda hatırlanır
+      ve "YouTube ↗" linklerine de uygulanır.</p>
+    <p><b>YouTube Premium'dasın ama reklam çıkıyorsa.</b> Sayfadaki oynatıcı, tarayıcının üçüncü taraf çerez engeli
+      yüzünden seni tanıyamıyor. Chrome'da: Ayarlar → Gizlilik ve güvenlik → Üçüncü taraf çerezleri → İzin verilen
+      siteler → Ekle → <code>[*.]youtube.com</code>, sonra sayfayı yenile. "YouTube ↗" linki ise videoyu YouTube'da
+      açar, orada Premium her durumda geçerli.</p>
+    <p><b>iPhone'da tam ekran.</b> iPhone'daki tarayıcılar (Safari, Chrome) tam ekranda adres çubuğunu gizlemiyor.
+      Siteyi <b>Safari</b>'den ana ekrana eklersen (••• ya da Paylaş → Ana Ekrana Ekle → Ekle) ana ekrandaki simgeden
+      uygulama gibi, adres çubuğu olmadan açılır. iPhone'daki Chrome'da bu seçenek her sürümde yok; Safari'den bir kez
+      eklemek yeterli.</p>
+    <p><b>Video açılmıyor mu?</b> Bazı yayınlar yayıncının ayarı yüzünden Türkiye dışında izlenemiyor ("Bu video
+      ülkenizde kullanılamıyor"); bunu sitede değiştiremiyoruz. Altyazı kapalı başlar, oynatıcıdaki CC düğmesiyle
+      açılabilir.</p>
+    <p>Bütün düğmeler, zaman ayarı ve sık sorulan sorular: <a href="yardim.html" target="_self">Yardım</a>.</p>
+    </div>
+    <div class="l-en">
+    <p><b>When the clip starts.</b> The moment in the video is computed from the rally start time in the VolleyStation
+      record and the start time of the YouTube broadcast. The broadcast can lag a few seconds behind the hall (it
+      differs by broadcaster), and the moment the statistician marks the rally is not exactly the serve. If the clip
+      starts too early, increase the <b>Broadcast delay</b> under the player (+); if too late, decrease it (−). The
+      setting is remembered in this browser and also applies to the "YouTube ↗" links.</p>
+    <p><b>Seeing ads with YouTube Premium?</b> The embedded player cannot recognise you because of the browser's
+      third-party cookie blocking. In Chrome: Settings → Privacy and security → Third-party cookies → Allowed to use
+      third-party cookies → Add → <code>[*.]youtube.com</code>, then reload. The "YouTube ↗" link opens the video on
+      YouTube, where Premium always applies.</p>
+    <p><b>Full screen on iPhone.</b> Browsers on iPhone (Safari, Chrome) keep the address bar in full screen. Add the
+      site to the home screen from <b>Safari</b> (••• or Share → Add to Home Screen → Add) and open it from the icon:
+      it opens like an app, without the address bar.</p>
+    <p><b>Video not available?</b> Some broadcasts are geo-restricted by the broadcaster and cannot be watched outside
+      Türkiye ("This video is not available in your country"); this is not something the site can change. The
+      broadcasts are in Turkish. Captions start off; turn them on with the CC button in the player (YouTube can also
+      auto-translate them).</p>
+    <p>All controls, timing and FAQ: <a href="yardim.html" target="_self">Help</a>.</p>
+    </div>
+  </details>
+
+  <div class="player" id="player" hidden>
+    <div class="frame"><div id="yt"></div><div class="fade" id="fade"></div>
+      <div class="endcard" id="endcard"><b data-t="end">Listenin sonu</b><span id="endinfo"></span>
+        <button id="again" data-t="again">↺ Baştan</button></div>
+      <div class="fsbar"><button id="fexit" data-it="fexit" title="Tam ekrandan çık">✕</button><button id="fnext" data-it="fnext" title="Sonraki">▶</button>
+        <button id="fprev" data-it="fprev" title="Önceki">◀</button></div>
+      <div class="cap" id="cap"><b id="cap1"></b><span id="cap2"></span></div></div>
+    <div class="bar"><span id="now"></span>
+      <span class="ctl">
+        <span class="offset" data-it="delay_title" title="Video erken başlıyorsa +, geç başlıyorsa − (bu tarayıcıda hatırlanır)"><span data-t="delay">Yayın gecikmesi</span>
+          <button data-d="-5">−5</button><button data-d="-1">−1</button><b id="off">0 sn</b>
+          <button data-d="1">+1</button><button data-d="5">+5</button></span>
+        <label class="auto" data-it="auto_title" title="Ralli bitince listedeki bir sonraki sayıya geç"><input type="checkbox" id="auto"> <span data-t="auto">Sırayla oynat</span></label>
+        <label class="auto" data-it="replay_title" title="Sıradakine geçmeden yayındaki tekrarı da bekle (dig'lerde beklenmez)"><input type="checkbox" id="replay"> <span data-t="replay">Tekrarı izle</span></label>
+        <span class="nav"><button id="prev" data-t="prev">◀ Önceki</button> <button id="next" data-t="next">Sonraki ▶</button>
+          <button id="ytopen" data-it="ytopen" title="YouTube'da aç (şu anki saniyeden)">YouTube ↗</button>
+          <button id="shareclip" data-it="shareclip" title="Bu sayının linki">🔗</button>
+          <button id="shareyt" data-it="shareyt" title="YouTube linkiyle paylaş (X'te video oynar)">🔗 YouTube</button>
+          <button id="fs" data-it="fs" title="Tam ekran (F)">⛶</button></span>
+      </span></div>
+  </div>
+
+  <div class="sumrow"><span class="summary" id="summary"></span>
+    <button class="share" id="sharelist" data-t="sharelist" data-it="sharelist_title" title="Bu listenin linki">🔗 Listeyi paylaş</button></div>
+  <div class="novideo only-sayi" id="novideo"></div>
+  <div id="list"><div class="msg" data-t="loading2">Yükleniyor…</div></div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>
+    <p class="l-tr">Bağımsız, amatör bir voleybol meraklısının projesi; TVF, VolleyStation ya da yayıncılarla bir bağı yoktur.
+      Kaynak: TVF'nin resmi maç istatistikleri (VolleyStation sistemiyle tutuluyor; hücum sayısı, blok sayısı, Ace; dig:
+      istatistiği tutanın mükemmel ya da iyi notu verdiği dig'ler, ralli kaybedilmiş olabilir), TRT Spor ve TVF Voleybol
+      TV'nin YouTube yayınları. Videolar YouTube'un oynatıcısıyla yayıncıların kanallarından oynatılır, site video
+      kopyalamaz ya da barındırmaz; haklar sahiplerine aittir. Videosuna ulaşamadığımız maçlarda "video yok" yazar. Görüş ve öneriler için <a href="https://x.com/SultanlarStat">@SultanlarStat</a>.</p>
+    <p class="l-en">An independent project by an amateur volleyball fan; not affiliated with TVF, VolleyStation or the
+      broadcasters. Source: TVF's official match statistics (kept with the VolleyStation system; attack points, block points,
+      aces; digs: perfect or good digs as graded by the statistician, the rally may have been lost) and the TRT Spor and
+      TVF Voleybol TV broadcasts on YouTube. Videos play from the broadcasters' channels in YouTube's player; the site does
+      not copy or host any video, and all rights belong to their owners. Matches whose video we could not find are marked
+      "no video". Feedback:
+      <a href="https://x.com/SultanlarStat">@SultanlarStat</a>.</p>
+  </footer>
+</div>
+
+<script>
+let ROWS = [], SHOWN = [], CUR = -1, OFF = 0, UPDATED = null;
+let MODE = 'sayi', RALLIES = [], WEEKS = [];       // sekme; en uzun ralliler; [hafta, ilk gün, son gün]
+const ALL = '*';                                   // "Bütün takımlar"
+const MAXROW = 1500;                               // daha fazlası yavaşlatıyor: ilk 1500 satır, "seçimi daraltın"
+// iki dil: ?lang= > bu tarayıcıda seçilen > tarayıcının dili (Türkçe değilse İngilizce). Konum (IP) kullanılmaz.
+const I18N = {
+  tr: {title: 'Efeler Ligi · Sayı ve dig videoları', h1: 'Sayı ve dig videoları', team: 'Takım', match: 'Maç',
+       player: 'Oyuncu', tur_hucum: 'Hücum', tur_arka: 'Arka sıra', arka_title: 'Arka sıradaki oyuncunun (3 m gerisinden) hücum sayıları', tur_blok: 'Blok', tur_ace: 'Ace', tur_dig: 'Dig',
+       dig_title: "Mükemmel ve iyi dig'ler; ralli kaybedilmiş olabilir", delay: 'Yayın gecikmesi',
+       delay_title: 'Video erken başlıyorsa +, geç başlıyorsa − (bu tarayıcıda hatırlanır)', auto: 'Sırayla oynat',
+       auto_title: 'Ralli bitince listedeki bir sonraki sayıya geç', replay: 'Tekrarı izle',
+       replay_title: "Sıradakine geçmeden yayındaki tekrarı da bekle (dig'lerde beklenmez)", prev: '◀ Önceki', next: 'Sonraki ▶',
+       help: 'Yardım ve sık sorulan sorular', help_link: 'Yardım ve sık sorulan sorular →', shareclip: 'Bu sayının linki', shareyt: "YouTube linkiyle paylaş (X'te video oynar)", home: 'Ana sayfa', ytopen: "YouTube'da aç (şu anki saniyeden)", fs: 'Tam ekran (F)', sharelist: '🔗 Listeyi paylaş', sharelist_title: 'Bu listenin linki',
+       end: 'Listenin sonu', again: '↺ Baştan', fexit: 'Tam ekrandan çık', fnext: 'Sonraki', fprev: 'Önceki',
+       loading: 'Veri yükleniyor…', loading2: 'Yükleniyor…', fail: 'Veri okunamadı: ', all_matches: 'Bütün maçlar',
+       novideo_tag: ' (video yok)', novideo: 'Videosuna ulaşamadığımız maçlar: ', all_players: 'Bütün oyuncular',
+       points: n => `${n} sayı`, digs: n => `${n} dig`, n_hucum: n => `${n} hücum sayısı`, n_arka: n => `${n} arka sıra hücum sayısı`, n_blok: n => `${n} blok sayısı`, n_ace: n => `${n} Ace`, withvideo: n => `${n} tanesinin videosu var`,
+       empty: 'Bu seçimde sayı yok.', set: n => `${n}. set`, novid: 'video yok', copied: 'Link kopyalandı',
+       share_x: "X'te paylaş", sec: 'sn', lang_btn: 'EN',
+       tab_sayi: "Sayılar ve dig'ler", tab_uzun: 'En uzun ralliler', all_teams: 'Bütün takımlar', week: 'Hafta',
+       all_season: 'Bütün sezon', upto: (n, c) => `${n}. haftaya kadar ${c}`.trim(), latest_week: n => `Son hafta (${n}. hafta)`, week_n: (n, r) => `${n}. hafta · ${r}`, kac: 'Kaç ralli',
+       len: (h, m) => `${h} hücum · ${m} temas`, rank: k => `En uzun ${k}. ralli`, rallies: n => `${n} ralli`,
+       uzun_sum: n => `En uzun ${n} ralli · hücum sayısına göre, eşitlikte temas`, h_date: 'Tarih', h_match: 'Maç',
+       h_set: 'Set · skor', h_len: 'Uzunluk', h_won: 'Kazanan',
+       toomany: n => `İlk ${n} satır gösteriliyor; takım, hafta ya da maç seçerek daraltın.`,
+       lead: d => `Takım, maç ve oyuncu seç; hücum sayısı, blok sayısı, Ace ve dig'lerin listesi gelir. Satıra tıklayınca ` +
+                  `video o ralliden başlar, Önceki / Sonraki ile sayılar arasında geçilir. Son güncelleme ${d}.`},
+  en: {title: 'Efeler League · Point & dig videos', h1: 'Point & dig videos', team: 'Team', match: 'Match',
+       player: 'Player', tur_hucum: 'Attack', tur_arka: 'Back row', arka_title: 'Attack points by back-row players (from behind the 3 m line)', tur_blok: 'Block', tur_ace: 'Ace', tur_dig: 'Dig',
+       dig_title: 'Perfect and good digs; the rally may have been lost', delay: 'Broadcast delay',
+       delay_title: 'If the clip starts early press +, if late − (remembered in this browser)', auto: 'Play next',
+       auto_title: 'When the rally ends, go to the next one in the list', replay: 'Watch replay',
+       replay_title: 'Wait for the broadcast replay before moving on (not for digs)', prev: '◀ Prev', next: 'Next ▶',
+       help: 'Help and FAQ', help_link: 'Help and FAQ →', shareclip: 'Link to this point', shareyt: 'Share the YouTube link (plays inside the post on X)', home: 'Home', ytopen: 'Open on YouTube (from the current second)', fs: 'Full screen (F)', sharelist: '🔗 Share list', sharelist_title: 'Link to this list',
+       end: 'End of list', again: '↺ Restart', fexit: 'Exit full screen', fnext: 'Next', fprev: 'Previous',
+       loading: 'Loading data…', loading2: 'Loading…', fail: 'Could not load data: ', all_matches: 'All matches',
+       novideo_tag: ' (no video)', novideo: 'Matches without video: ', all_players: 'All players',
+       points: n => `${n} point${n === 1 ? '' : 's'}`, digs: n => `${n} dig${n === 1 ? '' : 's'}`,
+       n_hucum: n => `${n} attack point${n === 1 ? '' : 's'}`, n_arka: n => `${n} back-row attack point${n === 1 ? '' : 's'}`, n_blok: n => `${n} block point${n === 1 ? '' : 's'}`, n_ace: n => `${n} ace${n === 1 ? '' : 's'}`,
+       withvideo: n => `${n} with video`, empty: 'Nothing in this selection.', set: n => `Set ${n}`,
+       novid: 'no video', copied: 'Link copied', share_x: 'Share on X', sec: 's', lang_btn: 'TR',
+       tab_sayi: 'Points & digs', tab_uzun: 'Longest rallies', all_teams: 'All teams', week: 'Week',
+       all_season: 'Whole season', upto: (n, c) => `${c} through week ${n}`.trim(), latest_week: n => `Latest week (week ${n})`, week_n: (n, r) => `Week ${n} · ${r}`, kac: 'How many',
+       len: (h, m) => `${h} attacks · ${m} contacts`, rank: k => `Longest rally #${k}`,
+       rallies: n => `${n} rall${n === 1 ? 'y' : 'ies'}`, uzun_sum: n => `Longest ${n} rallies · by attacks, then contacts`,
+       h_date: 'Date', h_match: 'Match', h_set: 'Set · score', h_len: 'Length', h_won: 'Won by',
+       toomany: n => `Showing the first ${n} rows; pick a team, week or match to narrow down.`,
+       lead: d => `Pick a team, match and player to list attack points, block points, aces and digs. Click a row and ` +
+                  `the video starts at that rally; use Prev / Next to step through. Last update ${d}.`},
+};
+let LANG = 'tr';
+try {
+  const q = new URLSearchParams(location.search).get('lang'), st = localStorage.getItem('lang');
+  LANG = ['tr', 'en'].includes(q) ? q : ['tr', 'en'].includes(st) ? st
+       : ((navigator.languages || [navigator.language || 'tr']).some(l => /^tr/i.test(l)) ? 'tr' : 'en');
+  if (['tr', 'en'].includes(q)) localStorage.setItem('lang', q);     // linkle seçilen dil de hatırlanır (ana sayfaya dönünce)
+} catch (e) {}
+const t = (k, ...a) => { const v = (I18N[LANG] || I18N.tr)[k] ?? I18N.tr[k] ?? k; return typeof v === 'function' ? v(...a) : v; };
+const TL = tur => t('tur_' + fold(tur));             // tür adı seçili dilde (veride Türkçe: Hücum / Blok / Ace / Dig)
+try { OFF = parseInt(localStorage.getItem('offset') || '0', 10) || 0; } catch (e) {}
+const $ = id => document.getElementById(id);
+// GoatCounter olayları (çerezsiz; ziyaretçiyi tanımaz): takım / oyuncu seçimi, izlenen video, YouTube tıklaması
+const gc = (path, title) => { try { window.goatcounter && window.goatcounter.count({path, title: title || path, event: true}); } catch (e) {} };
+const TR_DATE = d => d.slice(8, 10) + '.' + d.slice(5, 7) + '.' + d.slice(0, 4);
+
+// Türkçe harf ve büyük-küçük harf farkı gözetmeden karşılaştırma ('Fenerbahçe' ~ 'FENERBAHCE', 'ı' ~ 'i')
+const fold = s => String(s).toLocaleLowerCase('tr').replace(/ı/g, 'i').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+// listedeki seçenekler arasında: önce birebir, sonra başlayan, sonra içeren
+function pick(sel, want) {
+  if (!want) return false;
+  const w = fold(want), o = [...sel.options].filter(x => x.value);
+  const words = v => fold(v).split(/\s+/).sort().join(' ');    // ad sırası değişmiş eski linkler (Tuğba Şenoğlu İvegin)
+  const hit = o.find(x => fold(x.value) === w) || o.find(x => fold(x.value).startsWith(w)) || o.find(x => fold(x.value).includes(w))
+           || o.find(x => words(x.value) === words(want))
+           || o.find(x => { const a = fold(x.value).split(/\s+/), ww = fold(want).split(/\s+/);    // ad kısalmış (Chloe çıktı)
+                            return a.length >= 2 && a.every(k => ww.includes(k)); });
+  if (hit) sel.value = hit.value;
+  return !!hit;
+}
+const teamName = v => v === ALL ? t('all_teams') : v;
+// hafta seçimi: '' bütün sezon, 'son' her zaman en son hafta (linkte hafta=son: yeni hafta gelince kendiliğinden), sayı
+const LAST = 'son';
+const weekNo = () => $('week').value === LAST ? String(WEEKS.length ? WEEKS[WEEKS.length - 1][0] : '') : $('week').value;
+const weekOk = r => !$('week').value || String(r.hafta) === weekNo();
+// tek bir sayının kimliği (linkte an=): maç_set_skor_tür
+const clipId = r => `${r.mac_id}_${r.set}_${r.skor}_${fold(r.tur)}`;
+
+// seçim adreste: ?takim=&mac=&oyuncu=&tur= (sayfa yenilenmeden güncellenir; link paylaşılınca aynı seçim açılır)
+// kart sürümü: X önizlemeyi adrese göre günlerce saklıyor; kapak.png değişince KART ve kapak.png?v= birlikte artırılır,
+// yeni paylaşılan linkler yeni görselle çıkar (21.11.2026)
+const KART = 2;
+// linkte adlar harfsiz (Fenerbahce, Eda+Erdem+Dundar; %C3%A7 gibi kodlar görünmesin); pick() harflerden bağımsız eşleşir
+const latin = v => v.replace(/ı/g, 'i').replace(/İ/g, 'I').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+function stateUrl(an, noTeam) {          // noTeam: takım sayfasının adresinde (t/<takım>/) takım zaten var
+  const q = new URLSearchParams();
+  if (MODE === 'uzun') q.set('mod', 'uzun');
+  if (!noTeam) q.set('takim', $('team').value === ALL ? 'hepsi' : latin($('team').value));
+  if ($('week').value) q.set('hafta', $('week').value);
+  if (MODE === 'uzun') { if ($('kac').value !== '20') q.set('kac', $('kac').value); }
+  else {
+    if ($('match').value) q.set('mac', $('match').value);
+    if ($('pl').value) q.set('oyuncu', latin($('pl').value));
+    const ty = [...document.querySelectorAll('.types input')];
+    if (ty.some(x => !x.checked)) q.set('tur', ty.filter(x => x.checked && !x.disabled).map(x => fold(x.value)).join(','));
+  }
+  if (an) q.set('an', an);
+  q.set('v', KART);
+  return location.origin + location.pathname + '?' + q.toString().replace(/%2C/g, ',').replace(/\+/g, '+');
+}
+// takım sayfasının adı: kapak.py'deki slug() ile aynı kural (t/<ad>/, kapak/<ad>.png, logo/<ad>.png)
+const slug = s => fold(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function cardTeam() {
+  const team = $('team').value;
+  if (team && team !== ALL) return team;
+  const p = MODE === 'sayi' && $('pl').value, rs = p ? ROWS.filter(r => r.oyuncu === p) : [];
+  return rs.length ? rs[rs.length - 1].takim : '';
+}
+// paylaşılan link: takım belliyse takımın sayfası (X o sayfanın logolu kapağını gösterir, sayfa buraya yönlendirir)
+function shareUrl(an) {
+  const tm = cardTeam(), u = stateUrl(an, tm && tm === $('team').value).replace('hafta=' + LAST, 'hafta=' + weekNo());
+  const dir = location.origin + location.pathname.replace(/[^/]*$/, '');
+  return tm ? dir + 't/' + slug(tm) + '/' + u.slice(u.indexOf('?')) : u;
+}
+function showLogo() {
+  const tm = cardTeam(), img = $('tlogo');
+  img.hidden = !tm;
+  if (tm) { img.src = 'logo/' + slug(tm) + '.png'; img.alt = img.title = tm; }
+}
+function syncUrl() { showLogo(); try { history.replaceState(null, '', stateUrl()); } catch (e) {} }
+
+function applyUrl() {
+  const q = new URLSearchParams(location.search);
+  MODE = q.get('mod') === 'uzun' ? 'uzun' : 'sayi';
+  showMode();
+  if (['hepsi', 'all', '*'].includes(fold(q.get('takim') || ''))) $('team').value = ALL;
+  else pick($('team'), q.get('takim'));
+  const hw = ['son', 'latest', 'last'].includes(fold(q.get('hafta') || '')) ? LAST : q.get('hafta');
+  if (hw && [...$('week').options].some(o => o.value === hw)) $('week').value = hw;
+  else if (!q.get('takim') && MODE === 'sayi' && WEEKS.length) $('week').value = LAST;   // ilk açılış: son hafta
+  if (q.get('kac') && [...$('kac').options].some(o => o.value === q.get('kac'))) $('kac').value = q.get('kac');
+  matches();
+  pick($('match'), q.get('mac'));
+  if (!location.search) document.querySelector('.types input[value="Dig"]').checked = false;   // ilk açılış: dig'ler kapalı
+  if (q.get('tur')) {
+    const want = q.get('tur').split(',').map(fold);
+    document.querySelectorAll('.types input').forEach(x => x.checked = want.includes(fold(x.value)));
+  }
+  arkaSync();
+  players();
+  pick($('pl'), q.get('oyuncu'));
+  render();
+  const an = q.get('an');
+  if (an) {
+    const i = SHOWN.findIndex(r => clipId(r) === fold(an));
+    if (i >= 0) play(i);
+  }
+}
+
+// paylaş: telefonda sistemin paylaşma menüsü, bilgisayarda link kopyalanır + "X'te paylaş"
+let TOAST_T = null;
+async function share(url, text) {
+  gc('paylas/' + (text || '').split(' · ')[0]);
+  if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+    try { await navigator.share({title: t('title'), text, url}); return; } catch (e) { return; }
+  }
+  try { await navigator.clipboard.writeText(url); } catch (e) {}
+  const x = 'https://x.com/intent/post?text=' + encodeURIComponent(text + ' ' + url + ' via @SultanlarStat');
+  $('toast').innerHTML = `${t('copied')} <a href="${x}">${t('share_x')}</a>`;
+  $('toast').classList.add('on');
+  clearTimeout(TOAST_T); TOAST_T = setTimeout(() => $('toast').classList.remove('on'), 5000);
+}
+
+// küçük JSON'u satır nesnelerine açar (sayi_videolari.py: maclar / oyuncular / turler / satirlar)
+function expand(d) {
+  const wk = {};
+  d.maclar.forEach(([, tarih, , , , h]) => { if (h) wk[h] = [h, wk[h] ? wk[h][1] < tarih ? wk[h][1] : tarih : tarih,
+                                                             wk[h] ? wk[h][2] > tarih ? wk[h][2] : tarih : tarih]; });
+  WEEKS = Object.values(wk).sort((a, b) => a[0] - b[0]);
+  RALLIES = (d.ralliler || []).map(([mi, set, skor, hucum, temas, side, sec, end, nx]) => {
+    const [mac_id, tarih, ev, dep, video, hafta] = d.maclar[mi];
+    return {mac_id, tarih, ev, dep, video, hafta, set, skor, hucum, temas, kazanan: side ? dep : ev, oyuncu: '',
+            tur: 'Ralli', saniye: sec, bitis: end, sinir: nx ?? null};
+  });
+  return d.satirlar.map(([mi, set, skor, side, pi, ti, sec, end, nx, arka]) => {
+    const [mac_id, tarih, ev, dep, video, hafta] = d.maclar[mi];
+    return {mac_id, tarih, ev, dep, video, hafta, set, skor, takim: side ? dep : ev, oyuncu: d.oyuncular[pi],
+            tur: d.turler[ti], saniye: sec, bitis: end, sinir: nx ?? null, arka: !!arka};
+  });
+}
+// tür seçimi: "Arka sıra" hücumun alt kümesi (Hücum seçiliyken arka sıra hücumları zaten içinde)
+const typeOk = (r, types) => types.includes(r.tur) || (r.arka && types.includes('Arka'));
+
+function fail(msg) {
+  $('sub').textContent = '';
+  $('list').innerHTML = `<div class="msg">${t('fail')}${msg}</div>`;
+}
+// sadece bu sayfanın kendi hatası ve veri henüz yüklenmemişken: YouTube / GoatCounter betiklerindeki bir hata
+// ("Script error.") listeyi silmesin
+window.addEventListener('error', e => {
+  if (!ROWS.length && e.filename && e.filename.split('?')[0] === location.href.split('?')[0])
+    fail(`${e.message} (satır ${e.lineno})`);
+});
+
+function opts(sel, items, keep) {
+  const old = keep ? sel.value : null;
+  sel.innerHTML = items.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+  if (old !== null && items.some(([v]) => v === old)) sel.value = old;
+}
+
+const hasVideo = id => ROWS.some(x => x.mac_id === id && x.saniye !== null);
+
+function teams() {
+  const tm = [...new Set(ROWS.map(r => r.takim))].sort((a, b) => a.localeCompare(b, 'tr'));
+  opts($('team'), [[ALL, t('all_teams')], ...tm.map(x => [x, x])], true);
+}
+function weeks() {
+  const d = s => s.slice(8, 10) + '.' + s.slice(5, 7);
+  const ws = WEEKS.map(([n, a, b]) => [String(n), t('week_n', n, a === b ? d(a) : `${d(a)}–${d(b)}`)]).reverse();
+  const last = WEEKS.length ? WEEKS[WEEKS.length - 1][0] : '';
+  opts($('week'), [['', t('all_season')], ...(last ? [[LAST, t('latest_week', last)]] : []), ...ws], true);
+}
+
+function matches() {
+  const team = $('team').value, seen = new Map(), none = [];
+  ROWS.filter(r => (team === ALL || r.ev === team || r.dep === team) && weekOk(r)).forEach(r => {
+    if (!seen.has(r.mac_id)) {
+      const opp = r.ev === team ? r.dep : r.ev, video = hasVideo(r.mac_id);
+      const lbl = team === ALL ? `${r.ev} – ${r.dep}` : `${r.ev === team ? '' : '@ '}${opp}`;
+      seen.set(r.mac_id, `${TR_DATE(r.tarih)} · ${lbl}${video ? '' : t('novideo_tag')}`);
+      if (!video) none.push(`${TR_DATE(r.tarih)} ${r.ev} – ${r.dep}`);
+    }
+  });
+  opts($('match'), [['', t('all_matches')], ...[...seen].reverse()], true);
+  $('novideo').textContent = none.length ? t('novideo') + none.join(' · ') : '';
+}
+
+// parantezdeki sayı seçili türlere göre (sadece Dig işaretliyse dig sayısı); türde olayı olmayan oyuncu (0) ile kalır
+function players() {
+  const team = $('team').value, m = $('match').value, n = new Map();
+  const types = [...document.querySelectorAll('.types input:checked')].map(x => x.value);
+  ROWS.filter(r => (team === ALL || r.takim === team) && weekOk(r) && (!m || r.mac_id === m))
+      .forEach(r => n.set(r.oyuncu, (n.get(r.oyuncu) || 0) + (typeOk(r, types) ? 1 : 0)));
+  const list = [...n].sort((a, b) => b[1] - a[1]);
+  opts($('pl'), [['', t('all_players')], ...list.map(([p, c]) => [p, `${p} (${c})`])], true);
+}
+
+// "48 sayı · 30 dig" (dig sayı değil, ayrı sayılır)
+// sayı türlerinin hepsi seçili değilse türüyle: "59 Ace", "40 hücum sayısı · 12 blok sayısı"
+function counts(rows) {
+  if (MODE === 'uzun') return t('rallies', rows.length);
+  const on = [...document.querySelectorAll('.types input:checked')].map(x => x.value);
+  const pts = ['Hücum', 'Blok', 'Ace'], c = tur => rows.filter(r => r.tur === tur).length;
+  const d = c('Dig'), n = rows.length - d;
+  const p = pts.every(x => on.includes(x)) ? [n ? t('points', n) : '']
+          : [...pts.filter(x => on.includes(x)).map(x => t('n_' + fold(x), c(x))),
+             ...(on.includes('Arka') && !on.includes('Hücum') ? [t('n_arka', rows.filter(r => r.arka).length)] : [])];
+  return [...p, d ? t('digs', d) : ''].filter(Boolean).join(' · ') || t('points', 0);
+}
+
+// videodaki saniye, ziyaretçinin başlangıç ayarıyla
+const sec = r => Math.max(r.saniye + OFF, 0);
+
+function showOff() { $('off').textContent = (OFF > 0 ? '+' : OFF < 0 ? '−' : '') + Math.abs(OFF) + ' ' + t('sec'); }
+
+// satırın iki satırlık etiketi (alt yazı, oynatıcı altı, paylaşım)
+function lbl(r) {
+  if (r.tur === 'Ralli') return [`${t('rank', r.sira)} · ${t('len', r.hucum, r.temas)}`, `${t('set', r.set)} ${r.skor}`];
+  return [`${r.oyuncu} · ${TL(r.tur)}`, `${t('set', r.set)} ${r.skor}`];
+}
+
+function bindRows() {
+  document.querySelectorAll('.row.click, .urow.click').forEach(el => {
+    el.onclick = () => play(+el.dataset.i);
+    el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(+el.dataset.i); } };
+  });
+}
+
+// En uzun ralliler: hücum sayısına göre (eşitlikte temas), seçili takım / hafta, ilk N
+function renderUzun() {
+  const team = $('team').value, n = +$('kac').value;
+  SHOWN = RALLIES.filter(r => (team === ALL || r.ev === team || r.dep === team) && weekOk(r))
+                 .sort((a, b) => b.hucum - a.hucum || b.temas - a.temas || (a.tarih < b.tarih ? -1 : 1)).slice(0, n)
+                 .map((r, i) => ({...r, sira: i + 1}));
+  $('summary').textContent = t('uzun_sum', SHOWN.length);
+  if (!SHOWN.length) { $('list').innerHTML = `<div class="msg">${t('empty')}</div>`; syncUrl(); return; }
+  const mx = SHOWN[0].hucum;
+  let html = `<div class="urow h"><span>#</span><span class="d">${t('h_date')}</span><span>${t('h_match')}</span>` +
+             `<span class="d">${t('h_set')}</span><span>${t('h_len')}</span><span class="w">${t('h_won')}</span><span></span></div>`;
+  SHOWN.forEach((r, i) => {
+    const url = r.saniye !== null ? `https://www.youtube.com/watch?v=${r.video}&t=${sec(r)}s` : '';
+    html += `<div class="urow${url ? ' click' : ''}" data-i="${i}"${url ? ' tabindex="0" role="button"' : ''}>
+      <span class="rk">${r.sira}</span><span class="d muted">${TR_DATE(r.tarih)}</span>
+      <span>${r.ev} – ${r.dep}<span class="ss">${TR_DATE(r.tarih)} · ${t('set', r.set)} ${r.skor}</span></span>
+      <span class="d">${t('set', r.set)} ${r.skor}</span>
+      <span><b>${t('len', r.hucum, r.temas)}</b><div class="bar"><i style="width:${Math.round(100 * r.hucum / mx)}%"></i></div></span>
+      <span class="w">${r.kazanan}</span>
+      ${url ? '<span></span>' : `<span class="muted">${t('novid')}</span>`}
+    </div>`;
+  });
+  $('list').innerHTML = html;
+  syncUrl();
+  bindRows();
+}
+
+function render() {
+  if (MODE === 'uzun') return renderUzun();
+  const team = $('team').value, m = $('match').value, p = $('pl').value;
+  const types = [...document.querySelectorAll('.types input:checked')].map(x => x.value);
+  SHOWN = ROWS.filter(r => (team === ALL || r.takim === team) && weekOk(r) && (!m || r.mac_id === m) &&
+                           (!p || r.oyuncu === p) && typeOk(r, types));
+  const vid = SHOWN.filter(r => r.saniye !== null).length;
+  $('summary').textContent = `${counts(SHOWN)} · ${t('withvideo', vid)}`;
+  if (!SHOWN.length) { $('list').innerHTML = `<div class="msg">${t('empty')}</div>`; syncUrl(); return; }
+  let html = '', last = null;
+  SHOWN.slice(0, MAXROW).forEach((r, i) => {
+    if (r.mac_id !== last) {
+      html += `<div class="match">${TR_DATE(r.tarih)} · ${r.ev} – ${r.dep}</div>`;
+      last = r.mac_id;
+    }
+    const url = r.saniye !== null ? `https://www.youtube.com/watch?v=${r.video}&t=${sec(r)}s` : '';
+    html += `<div class="row${url ? ' click' : ''}" data-i="${i}"${url ? ' tabindex="0" role="button"' : ''}>
+      <span class="muted">${t('set', r.set)}</span><span>${r.skor}</span>
+      <span class="tag t-${r.tur}">${TL(r.arka ? 'Arka' : r.tur)}</span><span class="who">${p ? '' : r.oyuncu}</span>
+      ${url ? '<span></span>' : `<span class="muted">${t('novid')}</span>`}
+    </div>`;
+  });
+  if (SHOWN.length > MAXROW) html += `<div class="msg">${t('toomany', MAXROW)}</div>`;
+  $('list').innerHTML = html;
+  syncUrl();
+  bindRows();
+}
+
+// YouTube oynatıcısı bir kez kurulur, sonra sadece video / saniye değişir (IFrame API): yeniden yüklenmez, telefonda
+// ilk videoda bir kez oynata basıldıktan sonra sonrakiler kendiliğinden başlar
+let YTP = null, YT_READY = false, PENDING = null;
+window.onYouTubeIframeAPIReady = () => { YT_READY = true; if (PENDING) load(...PENDING); };
+
+function load(video, start) {
+  if (!YT_READY) { PENDING = [video, start]; return; }
+  if (!YTP) {
+    // controls 0: YouTube'un alt kontrol çubuğu gizli (kullanıcının isteği, 22.11.2026); oynatma sitenin düğmeleriyle.
+    // Başlık / logo gizlenemiyor (showinfo, modestbranding kaldırıldı; oynatıcının üstünü örtmek YouTube kurallarına aykırı)
+    YTP = new YT.Player('yt', {videoId: video, playerVars: {start, autoplay: 1, rel: 0, playsinline: 1, cc_load_policy: 0,
+                                                              fs: 0, controls: 0, origin: location.origin},   // tam ekran: #fs
+                               events: {onReady: e => e.target.playVideo(),
+                                        onStateChange: e => {
+                                          if (e.data === 1) { reveal(); noCaptions(); }
+                                          else if (e.data === 0 && AUTO && CUR >= 0 && !FINISHED) step(1);   // video bitti
+                                        }}});
+    return;
+  }
+  const cur = YTP.getVideoData && YTP.getVideoData().video_id;
+  if (cur === video) { YTP.seekTo(start, true); YTP.playVideo(); }
+  else YTP.loadVideoById({videoId: video, startSeconds: start});
+}
+
+// altyazı kapalı başlasın (YouTube otomatik altyazıyı ya da izleyicinin ayarını açabiliyor); her yeni videoda bir kez,
+// izleyici sonra CC ile açarsa dokunulmaz
+let CC_OFF_FOR = null;
+function noCaptions() {
+  const id = (YTP.getVideoData && YTP.getVideoData().video_id) || '';
+  if (CC_OFF_FOR === id) return;
+  CC_OFF_FOR = id;
+  try { YTP.unloadModule('captions'); YTP.unloadModule('cc'); } catch (e) {}
+}
+
+// geçiş: video oynarken başka sayıya geçilirse görüntü siyaha iner, ses kısılır; yeni video başlayınca açılır
+let VOL = null, CAP_T = null, FADE_T = null;
+function rampVolume(to, ms, done) {
+  if (!YTP || !YTP.getVolume) return done && done();
+  const from = YTP.getVolume(), n = 8; let k = 0;
+  const t = setInterval(() => {
+    k++; try { YTP.setVolume(Math.round(from + (to - from) * k / n)); } catch (e) {}
+    if (k >= n) { clearInterval(t); done && done(); }
+  }, ms / n);
+}
+function reveal() {
+  if (!$('fade').classList.contains('on')) return;
+  $('fade').classList.remove('on');
+  if (VOL !== null) { rampVolume(VOL, 800); VOL = null; }
+  clearTimeout(FADE_T);
+}
+function caption(r) {
+  const [a, b] = lbl(r);
+  $('cap1').textContent = a;
+  $('cap2').innerHTML = `${b}<i> · ${r.ev} – ${r.dep}</i>`;
+  $('cap').classList.add('on');
+  clearTimeout(CAP_T); CAP_T = setTimeout(() => $('cap').classList.remove('on'), 3500);
+}
+let FINISHED = false;
+function finish() {                       // listenin sonu: kararır, ses kısılır, video durur
+  if (FINISHED) return;
+  FINISHED = true;
+  const p = $('pl').value;
+  $('endinfo').textContent = `${MODE === 'uzun' ? t('tab_uzun') + ' · ' + teamName($('team').value) : p || teamName($('team').value)} · ${counts(SHOWN.filter(x => x.saniye !== null))}`;
+  $('fade').classList.add('on'); $('endcard').classList.add('on'); $('cap').classList.remove('on');
+  clearTimeout(FADE_T);
+  if (VOL === null && YTP && YTP.getVolume) VOL = YTP.getVolume();
+  rampVolume(0, 1000, () => {
+    try { YTP.pauseVideo(); if (VOL !== null) YTP.setVolume(VOL); } catch (e) {}
+    VOL = null;
+  });
+}
+
+let TRANS = null;                         // geçiş (kararma) sürüyorsa hedef sayı
+function go(r) {
+  if (FINISHED) { FINISHED = false; $('endcard').classList.remove('on'); }
+  if (TRANS) { TRANS = r; return; }       // hızlı tıklama: yeni geçiş başlatma, kararma bitince son seçilen açılır
+  const playing = YTP && YTP.getPlayerState && YTP.getPlayerState() === 1;
+  if (!playing) { load(r.video, sec(r)); caption(r); return; }
+  TRANS = r;
+  $('fade').classList.add('on');
+  if (VOL === null && YTP.getVolume) VOL = YTP.getVolume();
+  rampVolume(0, 1000, () => setTimeout(() => {          // 1 sn kararma + kısa siyah an, sonra yeni sayı
+    const t = TRANS; TRANS = null;
+    load(t.video, sec(t)); caption(t);
+    clearTimeout(FADE_T); FADE_T = setTimeout(reveal, 2000);   // telefon otomatik başlatmazsa siyah kalmasın
+  }, 250));
+}
+
+function fitList() {
+  // oynatıcı + aradaki özet satırları: listenin üstüne kadar olan yükseklik
+  if (!$('player').hidden) document.documentElement.style.setProperty('--ph', ($('list').offsetTop - $('player').offsetTop) + 'px');
+}
+window.addEventListener('resize', fitList);
+
+function play(i) {
+  const r = SHOWN[i]; if (!r || r.saniye === null) return;
+  CUR = i;
+  const first = $('player').hidden;
+  $('player').hidden = false;
+  document.body.classList.add('playing');
+  fitList();
+  go(r);
+  $('now').textContent = lbl(r).join(' · ');
+  gc('izle/' + (r.oyuncu || 'ralli'));
+  document.querySelectorAll('.row.on, .urow.on').forEach(e => e.classList.remove('on'));
+  const el = document.querySelector(`#list [data-i="${i}"]`); if (el) el.classList.add('on');
+  // ilk açılışta oynatıcıyı ekranın üstüne getir; seçili satır listede görünür kalsın
+  const top = $('player').getBoundingClientRect().top;
+  if (first || top > 1) window.scrollBy({top, behavior: 'smooth'});
+  const L = $('list');
+  if (el && (el.offsetTop < L.scrollTop || el.offsetTop + el.offsetHeight > L.scrollTop + L.clientHeight))
+    L.scrollTo({top: el.offsetTop - L.clientHeight / 3, behavior: 'smooth'});
+}
+
+// Sırayla oynat: ralli bitince sıradaki sayıya geç. Veride bitiş = kayıttaki ralli bitişi + 3 sn; kayıttaki bitiş hakemin
+// bitiş düdüğünden ortanca 0,8 sn sonra (5562 rallide ölçüldü, 23.11.2026), yani bitiş ≈ sayı + 4 sn. Bitişten sonra
+// SONRA sn: Tekrarı izle kapalıyken sayı + ~6 (tekrar başlamadan), açıkken sayı + ~18 (yayındaki tekrar), dig'de de + ~6
+// (tekrar dig'i nadiren gösteriyor; kullanıcının ayarı, 23.11.2026). Eskiden 10 / 20 / 4 ve ralli en az 12 sn: bitiş
+// belirsizken güvence payıydı, kapalıyken de tekrarın çoğu görünüyordu.
+const SONRA = {kapali: 2, acik: 14, dig: 2};
+let AUTO = true;
+try { AUTO = localStorage.getItem('auto') !== '0'; } catch (e) {}
+$('auto').checked = AUTO;
+$('auto').onchange = () => { AUTO = $('auto').checked; try { localStorage.setItem('auto', AUTO ? '1' : '0'); } catch (e) {} };
+let REPLAY = true;
+try { REPLAY = localStorage.getItem('replay') !== '0'; } catch (e) {}
+$('replay').checked = REPLAY;
+$('replay').onchange = () => { REPLAY = $('replay').checked; gc('tekrar/' + (REPLAY ? 'acik' : 'kapali'));
+  try { localStorage.setItem('replay', REPLAY ? '1' : '0'); } catch (e) {} };
+setInterval(() => {
+  if (!AUTO || !YTP || !YTP.getCurrentTime || CUR < 0) return;
+  const r = SHOWN[CUR];
+  if (!r || YTP.getPlayerState() !== 1 || (YTP.getVideoData() || {}).video_id !== r.video) return;
+  // dig'de tekrar beklenmez: yayın tekrarı genelde sayıyı gösteriyor, dig'i değil. Uzun rallide süre sınırı yok
+  // (1–1,5 dakika sürebiliyor); sayı / dig satırında en çok 45 sn
+  const len = (r.bitis ?? r.saniye + 15) - r.saniye;
+  const after = r.tur === 'Dig' ? SONRA.dig : REPLAY ? SONRA.acik : SONRA.kapali;
+  let end = sec(r) + (r.tur === 'Ralli' ? Math.max(len, 4) : Math.min(Math.max(len, 4), 45)) + after;
+  // en geç sonraki rallinin açılışında (o rallinin servis düdüğü) dur; tekrar beklerken 2 sn önce (oyuncular servise
+  // hazırlanırken geçilsin); setin son rallisinde sınır yok
+  if (r.sinir != null) end = Math.min(end, Math.max(r.sinir + OFF - (REPLAY ? 2 : 0), sec(r) + Math.max(len, 4)));
+  // geçiş sürerken ya da video henüz bu sayının yerine sarılmamışken (konum aralığın çok dışında) bekle: oynarken önceki
+  // bir satıra tıklanınca video bir süre eski yerinde kalıyor, "bitti" sanılıp sıradakilere atlanıyor ve oynayan sayıya
+  // geri dönülüyordu (kullanıcı gördü, 24.11.2026)
+  const now = YTP.getCurrentTime();
+  if (TRANS || now < sec(r) - 3 || now > end + 30) return;
+  if (now >= end && !FINISHED) step(1);
+}, 500);
+
+function step(d) {
+  for (let i = CUR + d; i >= 0 && i < SHOWN.length; i += d) if (SHOWN[i].saniye !== null) return play(i);
+  if (d > 0 && CUR >= 0) finish();      // sonda: durdur, "Listenin sonu"
+}
+
+$('team').onchange = () => { CUR = -1; matches(); players(); render(); gc('takim/' + teamName($('team').value)); };
+$('week').onchange = () => { CUR = -1; matches(); players(); render(); };
+$('kac').onchange = () => { CUR = -1; render(); };
+function showMode() {
+  document.body.dataset.mod = MODE;
+  document.querySelectorAll('.tab').forEach(b => { b.classList.toggle('on', b.dataset.mod === MODE); b.setAttribute('aria-selected', b.dataset.mod === MODE); });
+}
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => {
+  if (MODE === b.dataset.mod) return;
+  MODE = b.dataset.mod; CUR = -1; showMode(); render(); gc('sekme/' + MODE);
+});
+$('match').onchange = () => { CUR = -1; players(); render(); };
+$('pl').onchange = () => { CUR = -1; render(); if ($('pl').value) gc('oyuncu/' + $('pl').value); };
+// Arka sıra Hücum'un alt kümesi: Hücum seçiliyken işaretli ve kilitli (gri); Hücum kaldırılınca o da kalkar, ayrıca
+// seçilebilir (sadece arka sıra hücumları)
+function arkaSync() {
+  const h = document.querySelector('.types input[value="Hücum"]'), a = document.querySelector('.types input[value="Arka"]');
+  if (h.checked) { a.checked = true; a.disabled = true; }
+  else { if (a.disabled) a.checked = false; a.disabled = false; }
+}
+document.querySelectorAll('.types input').forEach(x => x.onchange = () => { arkaSync(); CUR = -1; players(); render(); });
+$('prev').onclick = () => step(-1);
+// paylaşılan metin linkle her zaman tutsun (kullanıcının isteği, 21.11.2026): "son hafta" linkte haftanın numarası
+// (shareUrl), metinde "9. hafta"; bütün sezonda sayı paylaşıldığı güne ait: "9. haftaya kadar 61 sayı"
+$('sharelist').onclick = () => {
+  const p = $('pl').value, m = $('match'), w = $('week'), wn = weekNo();
+  const wo = [...w.options].find(o => o.value === wn);
+  const wt = w.value ? (wo || w.options[w.selectedIndex]).text : '';
+  const upto = !w.value && !(MODE === 'sayi' && m.value) && WEEKS.length, last = upto && WEEKS[WEEKS.length - 1][0];
+  share(shareUrl(), (MODE === 'uzun' ? [t('tab_uzun'), teamName($('team').value), wt || (upto ? t('upto', last, '') : '')]
+                     : [p || teamName($('team').value), wt, m.value ? m.options[m.selectedIndex].text : '',
+                        upto ? t('upto', last, counts(SHOWN)) : counts(SHOWN)])
+                     .filter(Boolean).join(' · '));
+};
+$('shareclip').onclick = () => {
+  const r = SHOWN[CUR]; if (!r) return;
+  share(shareUrl(clipId(r)), `${lbl(r).join(' · ')} · ${r.ev} – ${r.dep}`);
+};
+// aynı metin, link YouTube'un (saniyeli): X gönderide YouTube kartını gösterir, video gönderinin içinde oynar
+$('shareyt').onclick = () => {
+  const r = SHOWN[CUR]; if (!r) return;
+  share(`https://youtu.be/${r.video}?t=${sec(r)}`, `${lbl(r).join(' · ')} · ${r.ev} – ${r.dep}`);
+};
+$('again').onclick = () => { CUR = -1; step(1); };
+// oynayan videoyu YouTube'da şu anki saniyeden aç (oynatıcı durdurulur, iki yerde ses olmasın)
+$('ytopen').onclick = () => {
+  const r = SHOWN[CUR]; if (!r) return;
+  const at = YTP && YTP.getCurrentTime ? Math.floor(YTP.getCurrentTime()) : sec(r);
+  try { YTP.pauseVideo(); } catch (e) {}
+  gc('youtube/' + (r.oyuncu || 'ralli'));
+  window.open(`https://www.youtube.com/watch?v=${r.video}&t=${at}s`, '_blank');
+};
+function setFs(on) {
+  const f = document.querySelector('.frame');
+  f.classList.toggle('fs', on);
+  document.body.style.overflow = on ? 'hidden' : '';
+  if (on) {
+    const req = f.requestFullscreen || f.webkitRequestFullscreen;     // iPhone'da yok: sadece ekranı kaplayan katman
+    if (req) { const pr = req.call(f); if (pr && pr.catch) pr.catch(() => {}); }
+  }
+  else if (document.fullscreenElement || document.webkitFullscreenElement)
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+}
+$('fs').onclick = () => setFs(!document.querySelector('.frame').classList.contains('fs'));
+$('fexit').onclick = () => setFs(false);
+$('fprev').onclick = () => step(-1);
+$('fnext').onclick = () => step(1);
+// Esc ya da sistemle tam ekrandan çıkılınca katmanı da kapat
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, () => {
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) setFs(false);
+}));
+document.addEventListener('keydown', e => {               // klavye: F tam ekran, ← → önceki / sonraki, Esc çık
+  if (e.target.matches('input, select, textarea') || $('player').hidden) return;
+  if (e.key === 'f' || e.key === 'F') $('fs').click();
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'Escape') setFs(false);
+});
+$('next').onclick = () => step(1);
+document.querySelectorAll('.offset button').forEach(b => b.onclick = () => {
+  OFF += +b.dataset.d;
+  try { localStorage.setItem('offset', OFF); } catch (e) {}
+  showOff(); render();
+  if (CUR >= 0) play(CUR);            // açık video yeni ayarla baştan
+});
+function lead() {
+  if (!UPDATED) return;
+  const loc = LANG === 'tr' ? 'tr-TR' : 'en-GB';
+  $('sub').textContent = t('lead', `${UPDATED.toLocaleDateString(loc)} ${UPDATED.toLocaleTimeString(loc, {hour: '2-digit', minute: '2-digit'})}`);
+  $('sub').append(' ', Object.assign(document.createElement('a'), {href: 'yardim.html', target: '_self', textContent: t('help_link')}));
+}
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.title = t('title');
+  document.querySelectorAll('[data-t]').forEach(el => { if (el.id !== 'sub' || !UPDATED) el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-it]').forEach(el => el.title = t(el.dataset.it));
+  $('lang').textContent = t('lang_btn');
+  showOff(); lead();
+  if (ROWS.length) {                     // seçimler korunur, metinler yeni dilde
+    const m = $('match').value, p = $('pl').value;
+    teams(); weeks(); matches(); $('match').value = m; players(); $('pl').value = p; render();
+    if (CUR >= 0 && SHOWN[CUR]) { $('now').textContent = lbl(SHOWN[CUR]).join(' · ');
+      document.querySelector(`[data-i="${CUR}"]`)?.classList.add('on'); }
+  }
+}
+$('lang').onclick = () => {
+  LANG = LANG === 'tr' ? 'en' : 'tr';
+  try { localStorage.setItem('lang', LANG); } catch (e) {}
+  gc('dil/' + LANG);
+  applyLang();
+};
+applyLang();
+
+// veri: aynı klasördeki sayi_videolari.json (iMac'te sayi_videolari.py yazar ve gönderir)
+fetch('sayi_videolari.json?v=' + Date.now(), {cache: 'no-store'})
+  .then(r => { if (!r.ok) throw new Error('veri dosyası alınamadı (' + r.status + ')'); return r.json(); })
+  .then(d => {
+    ROWS = expand(d);
+    UPDATED = new Date(d.guncelleme);
+    lead();
+    teams(); weeks(); applyUrl();
+  })
+  .catch(e => fail(e.message));
+</script>
+</body>
+</html>
